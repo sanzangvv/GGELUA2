@@ -1,0 +1,174 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        //ggebuild windows
+        {
+            "label": "ggebuild_windows",
+            "type": "shell",
+            "command": "%GGELUA%/build/windows/build.bat",
+            "args": [
+                "${workspaceFolder}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "lua",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "([^\"]+)\"\\]:(\\d+):\\s*(.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            }
+        },
+        //ggebuild android
+        {
+            "label": "ggebuild_android",
+            "type": "shell",
+            "command": "%GGELUA%/build/android/build.bat",
+            "args": [
+                "${workspaceFolder}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": {
+                "owner": "lua",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "([^\"]+)\"\\]:(\\d+):\\s*(.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            }
+        },
+        //ggerun
+        {
+            "label": "ggerun",
+            "type": "shell",
+            "command": "%GGELUA%/build/windows/run.bat",
+            "args": [
+                "${workspaceFolder}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true,
+                "group": "ggelua"
+            },
+            "problemMatcher": {
+                "owner": "lua",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "([^\"]+)\"\\]:(\\d+):\\s*(.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            }
+        },
+        {
+            "label": "ggerun_android",
+            "type": "shell",
+            "command": "%GGELUA%/build/android/run.bat",
+            "args": [
+                "${workspaceFolder}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true,
+                "group": "ggelua"
+            },
+            "problemMatcher": {
+                "owner": "lua",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "([^\"]+)\"\\]:(\\d+):\\s*(.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            }
+        },
+        //lua
+        {
+            "label": "lua",
+            "type": "shell",
+            "command": "%GGELUA%/lua.exe",
+            "args": [
+                "${file}",
+                "${workspaceFolder}"
+            ],
+            "windows": {
+                "options": {
+                    "shell": {
+                        "executable": "cmd.exe",
+                        "args": [
+                            "/c \"\" ",
+                            "chcp 65001 &&"
+                        ]
+                    }
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "problemMatcher": {
+                "owner": "lua",
+                "fileLocation": [
+                    "autoDetect",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "([^\"]+)\"\\]:(\\d+):\\s*(.*)",
+                    "file": 1,
+                    "line": 2,
+                    "message": 3
+                }
+            }
+        }
+    ]
+}
