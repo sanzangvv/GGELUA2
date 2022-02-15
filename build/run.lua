@@ -1,20 +1,21 @@
 -- @Author              : GGELUA
 -- @Date                : 2022-01-25 22:14:50
--- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-02-13 15:06:20
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-15 09:23:28
 require('build/base')
 pcall(require, 'ggerun')
-编译目录('ggelua')
-编译目录('./lua')
-写出脚本('./.ggelua/ggelua')
-local lfs = require('lfs')
-list = 判断文件('./.ggelua/assetslist.lua') and require('assetslist') or {}
-if type(list) ~= 'table' then
-    list = {}
-end
+
 if arg[1] == 'windows' then
     执行('%s/GGELUAc.exe %s', 引擎目录, 项目目录)
 else
+    编译目录('ggelua')
+    编译目录('./lua')
+    写出脚本('./.ggelua/ggelua')
+    local lfs = require('lfs')
+    list = 判断文件('./.ggelua/assetslist.lua') and require('assetslist') or {}
+    if type(list) ~= 'table' then
+        list = {}
+    end
     --adb shell pm dump com.GGELUA.game | findstr "versionName"
     local r = 执行('adb shell pm list packages | findstr "com.GGELUA.game"')
     if not r then
