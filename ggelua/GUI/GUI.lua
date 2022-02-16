@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-07-10 16:32:33
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-17 01:16:48
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-16 14:56:32
 
 local SDL = require 'SDL'
 local GUI = class('GUI')
@@ -28,42 +28,44 @@ function GUI:初始化(窗口, 文字)
     self._modal = {}
     self._msg = {}
 
-    self._mcb =
-        self._win:注册事件 {
-        键盘事件 = function(...)
-            if not self._msg.键盘 then
-                self._msg.键盘 = {}
+    self._win:注册事件(
+        self,
+        {
+            键盘事件 = function(...)
+                if not self._msg.键盘 then
+                    self._msg.键盘 = {}
+                end
+                table.insert(self._msg.键盘, select(select('#', ...), ...))
+            end,
+            输入事件 = function(...)
+                if not self._msg.输入 then
+                    self._msg.输入 = {}
+                end
+                table.insert(self._msg.输入, select(select('#', ...), ...))
+            end,
+            输入法事件 = function(...)
+                if not self._msg.输入法 then
+                    self._msg.输入法 = {}
+                end
+                table.insert(self._msg.输入法, select(select('#', ...), ...))
+            end,
+            鼠标事件 = function(...)
+                if not self._msg.鼠标 then
+                    self._msg.鼠标 = {}
+                end
+                table.insert(self._msg.鼠标, select(select('#', ...), ...))
+            end,
+            用户事件 = function(...)
+                if not self._msg.用户 then
+                    self._msg.用户 = {}
+                end
+                table.insert(self._msg.用户, select(select('#', ...), ...))
             end
-            table.insert(self._msg.键盘, select(select('#', ...), ...))
-        end,
-        输入事件 = function(...)
-            if not self._msg.输入 then
-                self._msg.输入 = {}
-            end
-            table.insert(self._msg.输入, select(select('#', ...), ...))
-        end,
-        输入法事件 = function(...)
-            if not self._msg.输入法 then
-                self._msg.输入法 = {}
-            end
-            table.insert(self._msg.输入法, select(select('#', ...), ...))
-        end,
-        鼠标事件 = function(...)
-            if not self._msg.鼠标 then
-                self._msg.鼠标 = {}
-            end
-            table.insert(self._msg.鼠标, select(select('#', ...), ...))
-        end,
-        用户事件 = function(...)
-            if not self._msg.用户 then
-                self._msg.用户 = {}
-            end
-            table.insert(self._msg.用户, select(select('#', ...), ...))
-        end
-        -- 窗口事件 = function(...)
-        --     table.insert(self._msg.窗口, select(select('#', ...), ...))
-        -- end
-    }
+            -- 窗口事件 = function(...)
+            --     table.insert(self._msg.窗口, select(select('#', ...), ...))
+            -- end
+        }
+    )
 end
 
 function GUI:更新(dt, x, y)

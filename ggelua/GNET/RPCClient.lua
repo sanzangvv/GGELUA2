@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-08 12:04:56
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-16 14:55:37
 
 local adler32 = require('zlib').adler32
 local m_pack = require('cmsgpack').pack
@@ -23,17 +23,20 @@ local _CBK = setmetatable({}, {__mode = 'k'})
 function RPCClient:RPCClient(mcall)
     if mcall and 引擎 then --用主线程回调数据
         self._mdata = {}
-        self._mreg =
-            引擎:注册事件 {
-            更新事件 = function()
-                if next(self._mdata) then
-                    for _, v in ipairs(self._mdata) do
-                        self:_接收事件(v, true)
+
+        引擎:注册事件(
+            self,
+            {
+                更新事件 = function()
+                    if next(self._mdata) then
+                        for _, v in ipairs(self._mdata) do
+                            self:_接收事件(v, true)
+                        end
+                        self._mdata = {}
                     end
-                    self._mdata = {}
                 end
-            end
-        }
+            }
+        )
     end
     PackClient.PackClient(self) --初始化父类
     local reg = {}

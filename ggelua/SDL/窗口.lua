@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-19 06:42:20
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-11 12:55:43
+-- @Last Modified time  : 2022-02-16 14:53:01
 
 local SDL = require('SDL')
 local gge = require('ggelua')
@@ -112,7 +112,7 @@ function SDL窗口:SDL窗口(t)
     self:渲染清除(0, 0, 0)
     self:渲染结束()
 
-    self._reg = setmetatable({}, {__mode = 'v'}) --注册消息
+    self._reg = setmetatable({}, {__mode = 'k'}) --注册消息
     self._tick = {}
     self._timer = {} --定时器
 end
@@ -222,6 +222,8 @@ function SDL窗口:_Event(t, ...)
             ggexpcall(self.初始化, self)
             self._inited = true
         end
+    elseif t == 0x100 then --SDL_QUIT
+        self:_Event(0x200, SDL.WINDOWEVENT_CLOSE)
     elseif t == 0x200 or t == 0x1000 then --SDL_WINDOWEVENT|SDL_DROPFILE|SDL_DROPTEXT
         if t == 0x200 then --SDL_WINDOWEVENT
             local event, t = ...
@@ -291,10 +293,14 @@ function SDL窗口:_Event(t, ...)
     end
 end
 
-function SDL窗口:注册事件(t)
+function SDL窗口:注册事件(k, t)
+    if t == nil then
+        t = k
+        k = {}
+    end
     if type(t) == 'table' then
-        table.insert(self._reg, t)
-        return t
+        self._reg[k] = t
+        return k, t
     end
 end
 --SDL.AddTimer是线程回调

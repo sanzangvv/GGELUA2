@@ -1,7 +1,7 @@
 -- @Author              : GGELUA
 -- @Date                : 2021-12-15 23:37:41
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-09 08:29:01
+-- @Last Modified time  : 2022-02-16 14:37:04
 
 local _ENV = setmetatable(require('gsdl2'), {__index = _G})
 SDL = _ENV
@@ -630,7 +630,7 @@ WINDOWEVENT_HIT_TEST = 16 --        /**< Window had a hit test that wasn't SDL_H
 -- 窗口_获得焦点 = 12 --WINDOWEVENT_FOCUS_GAINED
 -- 窗口_失去焦点 = 13 --WINDOWEVENT_FOCUS_LOST
 -- 窗口_关闭 = 14 --WINDOWEVENT_CLOSE
--- 窗口_拖放文件 = 0x1000
+WINDOWEVENT_DROPFILE = 0x1000 --拖放文件
 -- 状态_按下 = 1--SDL_PRESSED
 -- 状态_弹起 = 0--SDL_RELEASED
 
