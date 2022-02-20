@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-11 23:01:12
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-20 08:43:50
 
 local gge = require('ggelua')
 local SDL = require('SDL')
@@ -21,9 +21,9 @@ require('IMGUI.提示')
 require('IMGUI.文本')
 require('IMGUI.纹理')
 local IM控件 = require 'IMGUI.控件'
-local init --引用一下，不然会释放
+local init  --引用一下，不然会释放
 
-local IMGUI = class('IMGUI',IM控件)
+local IMGUI = class('IMGUI', IM控件)
 
 function IMGUI:初始化(file, size)
     if not init then
@@ -50,12 +50,12 @@ function IMGUI:初始化(file, size)
     end
 end
 
-function IMGUI:更新()
+function IMGUI:更新(dt)
     im.NewFrame()
     if self._demo[1] then
         im.ShowDemoWindow(self._demo)
     end
-    IM控件.更新(self)
+    IM控件._更新(self, dt)
     im.EndFrame()
 end
 
@@ -70,6 +70,5 @@ end
 
 function IMGUI:添加文字()
 end
-
 
 return IMGUI

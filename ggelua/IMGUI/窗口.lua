@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-13 22:55:27
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-21 03:55:23
 
 local ggf = require('GGE.函数')
 local im = require 'gimgui'
@@ -10,9 +10,18 @@ local IM控件 = require 'IMGUI.控件'
 local IM窗口 = class('IM窗口', IM控件)
 
 function IM窗口:初始化(name, x, y, w, h)
-    --self._name = name .. '##' .. tostring(self)
+    self._name = name .. '##' .. tostring(self)
     self._iswin = true
     self._flag = 64
+    self.是否可见 = false
+    if x and y then
+        self._x = x
+        self._y = y
+    end
+    if w and h then
+        self._w = w
+        self._h = h
+    end
 end
 
 local flag =
@@ -39,27 +48,28 @@ function IM窗口:__newindex(k, v)
     rawset(self, k, v)
 end
 
-function IM窗口:更新()
-    if self[1] then
+function IM窗口:_更新(dt)
+    if self.是否可见 then
         if self._x then
             im.SetNextWindowPos(self._x, self._y)
             self._x = nil
             self._y = nil
         end
-        if self._w then
+        if self._w and self._h then
             im.SetNextWindowSize(self._w, self._h)
             self._w = nil
             self._h = nil
         end
-        if im.Begin(self.名称, self, self._flag) then
-            IM控件.更新(self)
+        if im.Begin(self._name, self, self._flag) then
+            self.是否可见 = self[1]
+            IM控件._更新(self, dt)
             im.End()
         end
     end
 end
 
 function IM窗口:置可见(v, s)
-    self[1] = true
+    self[1] = v == true
     IM控件.置可见(self, v, s or not self.是否实例)
     return self
 end
@@ -95,13 +105,21 @@ end
 function IM窗口:取窗口高度()
     return im.GetWindowHeight()
 end
-
+--==============================================================================
 function IM控件:创建窗口(name, ...)
+    assert(self[name] == nil, name .. '->已经存在')
     self[name] = IM窗口(name, ...)
     table.insert(self._子控件, self[name])
     return self[name]
 end
---=====================================================
+
+function IM控件:创建临时窗口(name, ...) --关闭将被删除
+    local r = IM窗口(name, ...)
+    table.insert(self._子控件, r)
+    r._temp = true
+    return r
+end
+--==============================================================================
 local IM模态窗口 = class('IM模态窗口', IM控件)
 
 function IM模态窗口:初始化(name)
@@ -109,19 +127,17 @@ function IM模态窗口:初始化(name)
     self._flag = 64 | 256
 end
 
-function IM模态窗口:更新()
+function IM模态窗口:_更新()
     -- return im.BeginPopupModal(self._name,self,self._flag)
     -- return im.EndPopup()
 end
 
 --在开始 结束 之间使用
 -- function IM模态窗口:关闭()
---     self[1] = false
 --     return im.CloseCurrentPopup()
 -- end
 
 -- function IM模态窗口:打开()
---     self[1] = true
 --     return im.OpenPopup(self._name)
 -- end
 return IM窗口

@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-11 22:27:53
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-02-21 03:29:48
 
 local im = require 'gimgui'
 local IM控件 = require 'IMGUI.控件'
@@ -9,7 +9,6 @@ local IM控件 = require 'IMGUI.控件'
 local IM表格 = class('IM表格', IM控件)
 
 function IM表格:初始化(name)
-    self[1] = true
     self._list = {}
     self._data = {}
     self._sel = {}
@@ -24,7 +23,7 @@ end
 --     return self
 -- end
 
-function IM表格:更新()
+function IM表格:_更新(dt)
     if im.BeginTable(self.名称, #self._list, self._flag) then
         if not self._head then
             for i, v in ipairs(self._list) do
@@ -35,11 +34,12 @@ function IM表格:更新()
         for h, v in ipairs(self._data) do
             im.TableNextRow()
             self._sel[h].行号 = h
+            self.当前行 = h
             for l, v in ipairs(v) do
                 im.TableNextColumn() --im.TableSetColumnIndex(i)
-                v:更新()
+                v:_更新(dt)
                 if self._pop and l == 1 then
-                    if self._pop:更新(h) then
+                    if self._pop:_更新(dt) then
                         self._sel[h]:选中事件()
                     end
                 end
@@ -103,8 +103,9 @@ function IM表格:创建弹出()
     self._pop = require('IMGUI.弹出')()
     return self._pop
 end
-
+--==============================================================================
 function IM控件:创建表格(name, ...)
+    assert(self[name] == nil, name .. '->已经存在')
     self[name] = IM表格(name, ...)
     table.insert(self._子控件, self[name])
     return self[name]

@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-21 03:45:41
+-- @Last Modified time  : 2022-02-21 03:50:47
 
 local im = require 'gimgui'
 local IM控件 = require 'IMGUI.控件'
@@ -13,7 +13,7 @@ function IM列表:初始化()
 end
 
 function IM列表:_更新(dt)
-    if im.ListBox(self.名称, self, self._list) then
+    if im.Combo(self.名称, self, self._list) then
         self.当前选中 = self[1]
         self:发送消息('选中事件', self[1])
     end
