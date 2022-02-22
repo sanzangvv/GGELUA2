@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-12-11 01:01:03
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-21 03:59:20
+-- @Last Modified time  : 2022-02-21 17:22:04
 
 local im = require 'gimgui'
 local IM控件 = class('IM控件')
@@ -20,7 +20,13 @@ end
 function IM控件:_更新(...)
     for _, v in ipairs(self._子控件) do
         if v.是否可见 then
+            if v.是否禁止 then
+                im.BeginDisabled(true)
+            end
             v:_更新(...)
+            if v.是否禁止 then
+                im.EndDisabled()
+            end
             if v.更新 then
                 v:更新(...)
             end
