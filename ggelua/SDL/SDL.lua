@@ -1,7 +1,7 @@
 -- @Author              : GGELUA
 -- @Date                : 2021-12-15 23:37:41
--- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-16 14:37:04
+-- @Last Modified by    : GGELUA
+-- @Last Modified time  : 2022-03-04 10:48:30
 
 local _ENV = setmetatable(require('gsdl2'), {__index = _G})
 SDL = _ENV
@@ -766,7 +766,7 @@ function _G.main()
                         win.x, win.y = t.x, t.y
                     end
                 elseif _userevents[t.type] then --用户消息
-                    assert(pcall(_userevents[t.type], t.code, t.data1, t.data2))
+                    ggexpcall(_userevents[t.type], t.code, t.data1, t.data2)
                 else
                     for _, v in pairs(_wins) do
                         v:_Event(t.type, unpack(t))

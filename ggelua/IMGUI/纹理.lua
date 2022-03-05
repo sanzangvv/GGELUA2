@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-21 03:57:39
+-- @Last Modified time  : 2022-03-02 07:40:30
 
 local im = require 'gimgui'
 local IM控件 = require 'IMGUI.控件'
@@ -15,6 +15,9 @@ function IM纹理:_更新(dt)
     if self._tex then
         im.Image(self._tex:取对象())
         IM控件._检查鼠标(self)
+    end
+    if self.更新 then
+        self:更新(dt)
     end
 end
 

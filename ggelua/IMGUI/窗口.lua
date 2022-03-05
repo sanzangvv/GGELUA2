@@ -1,13 +1,14 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-01 21:04:09
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-21 03:55:23
+-- @Last Modified time  : 2022-03-02 07:57:56
 
 local ggf = require('GGE.函数')
 local im = require 'gimgui'
 local IM控件 = require 'IMGUI.控件'
 
 local IM窗口 = class('IM窗口', IM控件)
+IM窗口.是否窗口 = true
 
 function IM窗口:初始化(name, x, y, w, h)
     self._name = name .. '##' .. tostring(self)
@@ -62,7 +63,16 @@ function IM窗口:_更新(dt)
         end
         if im.Begin(self._name, self, self._flag) then
             self.是否可见 = self[1]
+            if self.更新 then
+                self:更新(dt)
+            end
             IM控件._更新(self, dt)
+            local w, h = im.GetWindowSize()
+            if w ~= self.宽度 or self.高度 ~= h then
+                self.宽度, self.高度 = w, h
+                self:发送消息('大小改变事件', w, h, im.GetWindowContentRegionMax())
+            end
+            --local x, y = im.GetWindowPos()
             im.End()
         end
     end
@@ -90,21 +100,6 @@ function IM窗口:置坐标(x, y)
     return self
 end
 
-function IM窗口:取窗口坐标()
-    return im.GetWindowPos()
-end
-
-function IM窗口:取窗口大小()
-    return im.GetWindowSize()
-end
-
-function IM窗口:取窗口宽度()
-    return im.GetWindowWidth()
-end
-
-function IM窗口:取窗口高度()
-    return im.GetWindowHeight()
-end
 --==============================================================================
 function IM控件:创建窗口(name, ...)
     assert(self[name] == nil, name .. '->已经存在')

@@ -1,20 +1,26 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-12-11 01:01:03
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-21 17:22:04
+-- @Last Modified time  : 2022-03-02 07:55:50
 
 local im = require 'gimgui'
 local IM控件 = class('IM控件')
+IM控件.是否可见 = true
+IM控件.x = 0
+IM控件.y = 0
 
 function IM控件:初始化(name, x, y, w, h)
     self.名称 = name and tostring(name) or nil
-    self.x = math.floor(tonumber(x) or 0)
-    self.y = math.floor(tonumber(y) or 0)
+    self.x = x
+    self.y = y
     self.宽度 = w
     self.高度 = h
 
     self._子控件 = {}
-    self.是否可见 = true
+    if x == 0 and y == 0 then
+        self.x = nil
+        self.y = nil
+    end
 end
 
 function IM控件:_更新(...)
@@ -23,12 +29,14 @@ function IM控件:_更新(...)
             if v.是否禁止 then
                 im.BeginDisabled(true)
             end
+            if rawget(v, 'x') and rawget(v, 'y') then
+                if not v.是否窗口 then
+                    im.SetCursorPos(v.x, v.y)
+                end
+            end
             v:_更新(...)
             if v.是否禁止 then
                 im.EndDisabled()
-            end
-            if v.更新 then
-                v:更新(...)
             end
         end
     end
@@ -47,6 +55,16 @@ function IM控件:_检查鼠标()
         end
         self:发送消息('焦点事件')
     end
+    if im.IsMouseDown() then
+        self:发送消息('左键按下事件')
+    end
+    if im.IsMouseReleased() then
+        self:发送消息('左键弹起事件')
+    end
+    if im.IsMouseClicked() then
+        self:发送消息('左键点击事件')
+    end
+
     if im.IsItemClicked() then
         self:发送消息('左键事件')
         if im.IsMouseDoubleClicked() then
@@ -57,6 +75,14 @@ function IM控件:_检查鼠标()
         self:发送消息('右键事件')
         if im.IsMouseDoubleClicked(1) then
             self:发送消息('右键双击事件')
+        end
+    end
+    if im.IsItemActive() then
+        if im.IsMouseDragging() then
+            self:发送消息('左键拖动事件', im.GetMouseDragDelta())
+        end
+        if im.IsMouseDragging(1) then
+            self:发送消息('右键拖动事件', im.GetMouseDragDelta())
         end
     end
 end
@@ -94,6 +120,19 @@ end
 
 function IM控件:置禁止(v)
     self.是否禁止 = v == true
+    return self
+end
+
+function IM控件:取坐标()
+    if rawget(self, 'x') then
+        return self.x, self.y
+    end
+    return im.GetCursorPos()
+end
+
+function IM控件:置坐标(x, y)
+    self.x = x
+    self.y = y
     return self
 end
 
@@ -190,15 +229,4 @@ function IM控件:创建选项(name, ...)
     return self[name]
 end
 
--- function IMBase:是否按下(b)
---     return im.IsMouseDown(b)
--- end
-
--- function IMBase:是否弹起(b)
---     return im.IsMouseReleased(b)
--- end
-
--- function IMBase:是否单击(b,r)
---     return im.IsMouseClicked(b,r)
--- end
 return IM控件

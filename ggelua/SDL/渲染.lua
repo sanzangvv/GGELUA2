@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-10-30 13:05:32
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-11 13:00:32
+-- @Last Modified time  : 2022-03-03 06:48:53
 
 local gge = require('ggelua')
 local SDL = require('SDL')
@@ -79,9 +79,9 @@ function SDL渲染:取渲染器()
     return self._rd
 end
 
-function SDL渲染:是否支持渲染区()
-    return self._rd and self._rd:RenderTargetSupported()
-end
+-- function SDL渲染:是否支持渲染区()
+--     return self._rd and self._rd:RenderTargetSupported()
+-- end
 
 function SDL渲染:创建渲染区(w, h)
     if self._rd then

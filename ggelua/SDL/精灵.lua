@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-05 05:04:00
+-- @Last Modified by    : GGELUA
+-- @Last Modified time  : 2022-03-04 11:27:15
 
 local SDL = require('SDL')
 SDL.IMG_Init()
@@ -263,10 +263,9 @@ end
 
 function SDL精灵:置混合(v) --ComposeCustomBlendMode
     self._blend = v
-    -- if self._tex then
-    --     self._tex:SetTextureBlendMode(v)
-    -- end
-    return self
+    if self._tex then
+        return self._tex:SetTextureBlendMode(v)
+    end
 end
 
 function SDL精灵:取混合()
