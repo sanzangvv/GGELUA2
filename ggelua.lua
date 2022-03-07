@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-17 08:26:43
--- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-06 14:23:10
+-- @Last Modified by    : GGELUA
+-- @Last Modified time  : 2022-03-07 16:30:31
 
 require('ggelua') --preload dll
 io.stdout:setvbuf('no', 0)
@@ -200,10 +200,14 @@ package.loaded =
     {},
     {
         __index = function(t, k)
+            if loaded[k] then
+                return loaded[k]
+            end
             k = 处理路径(k)
             return loaded[k]
         end,
         __newindex = function(t, k, v)
+            loaded[k] = v
             k = 处理路径(k)
             loaded[k] = v
         end,
