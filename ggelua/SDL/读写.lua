@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-19 06:42:20
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-09 08:29:29
+-- @Last Modified time  : 2022-03-08 09:17:48
 
 local _ENV = require('SDL')
 
@@ -19,7 +19,7 @@ function SDL读写:SDL读写(file, mode)
     elseif tp == 'userdata' and type(mode) == 'number' then
         self._rw = RWFromMem(file, mode)
     elseif tp == 'SDL_Memory' then --SDL.malloc
-        self._rw = RWFromMem(file:getptr(), file:getsize())
+        self._rw = file:getrwops()
     end
     if not self._rw then
         error('打开失败->' .. file)
@@ -86,8 +86,8 @@ function SDL读写:取位置()
     return self._rw:RWtell()
 end
 
-function SDL读写:读取(size)
-    return self._rw:RWread(size)
+function SDL读写:读取(...)
+    return self._rw:RWread(...)
 end
 
 function SDL读写:写入(str)
