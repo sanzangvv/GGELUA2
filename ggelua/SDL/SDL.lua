@@ -1,7 +1,7 @@
 -- @Author              : GGELUA
 -- @Date                : 2021-12-15 23:37:41
--- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-03-04 10:48:30
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-08 08:53:08
 
 local _ENV = setmetatable(require('gsdl2'), {__index = _G})
 SDL = _ENV
@@ -753,6 +753,9 @@ AddTimer(
 )
 
 function _G.main()
+    if not next(_wins) then
+        return
+    end
     while true do
         while PollEvent(e) do
             if checkhook(e) then
