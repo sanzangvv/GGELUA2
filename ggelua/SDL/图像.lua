@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-19 06:42:20
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-10 18:18:23
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-09 14:52:22
 
 local _ENV = require('SDL')
 IMG_Init()
@@ -213,9 +213,9 @@ function SDL图像:拉伸(w, h, linear)
     local sf = SDL图像(w, h)
     local dst = sf:取对象()
     if linear then
-        self._sf:SoftStretch(nil,dst,nil)
+        self._sf:SoftStretch(nil, dst, nil)
     else
-        self._sf:SoftStretchLinear(nil,dst,nil)
+        self._sf:SoftStretchLinear(nil, dst, nil)
     end
     return sf
 end
@@ -261,6 +261,9 @@ function SDL图像:减引用()
 end
 
 function SDL图像:渲染清除(r, g, b, a)
+    if r then
+        self._sf:FillRect(r, g, b, a)
+    end
     table.insert(
         _target,
         1,
