@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-01 21:04:09
--- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-01-25 20:08:37
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-10 13:37:54
 
 local gge = gge
 local _ENV = setmetatable({}, {__index = _G})
@@ -297,6 +297,7 @@ mkdir = 创建目录
 function 复制文件(old, new)
     local rf = io.open(old, 'rb')
     if rf then
+        创建目录(new)
         local wf = io.open(new, 'wb')
         if wf then
             wf:write(rf:read('a'))
