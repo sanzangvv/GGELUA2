@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-13 17:59:05
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-10 09:45:35
 
 local _CLASS, _METAS = package.loaded, {}
 local type = type
@@ -97,11 +97,19 @@ local function class(name, ...)
     cobj = {
         --初始化 = false,[name] = false,
         创建 = function(...)
-            local obj = setmetatable({}, meta)
+            local obj, ret = (setmetatable({}, meta))
             if cobj[name] then --初始化
-                return obj, cobj[name](obj, ...)
+                ret = {cobj[name](obj, ...)}
             end
-            return obj, class_new(obj, cobj, meta, ...)
+
+            if not ret then
+                ret = {class_new(obj, cobj, meta, ...)}
+            end
+
+            if ret[1] == false then
+                return table.unpack(ret)
+            end
+            return obj, table.unpack(ret)
         end
     }
     --_METAS[name]   = meta
