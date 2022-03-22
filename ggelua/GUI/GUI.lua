@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-07-10 16:32:33
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-16 14:56:32
+-- @Last Modified time  : 2022-03-21 14:17:48
 
 local SDL = require 'SDL'
 local GUI = class('GUI')
@@ -31,6 +31,9 @@ function GUI:初始化(窗口, 文字)
     self._win:注册事件(
         self,
         {
+            -- 更新事件 = function(_, dt, x, y)
+            --     self:_更新(dt, x, y)
+            -- end,
             键盘事件 = function(...)
                 if not self._msg.键盘 then
                     self._msg.键盘 = {}
@@ -200,8 +203,9 @@ function GUI:创建提示控件(...)
     return GUI控件.创建提示控件(self, ...)
 end
 
-function GUI:创建鼠标()
+function GUI:创建鼠标(名称)
     self._鼠标 = GUI控件('鼠标', 0, 0, self._win.宽度, self._win.高度, self)
+    self[名称] = self._鼠标
     return self._鼠标
 end
 
@@ -212,10 +216,10 @@ function GUI:创建界面(名称)
     return self[名称]
 end
 
-function GUI:重新初始化(名称)
+function GUI:重新初始化(名称, ...)
     local 控件 = self[名称]
     if 控件 then
-        控件:重新初始化()
+        控件:重新初始化(...)
     end
 end
 

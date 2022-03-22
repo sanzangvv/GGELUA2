@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-10-30 13:05:32
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-10 08:49:55
+-- @Last Modified time  : 2022-03-11 05:19:51
 
 local SDL = require('SDL')
 
@@ -39,6 +39,9 @@ function GGE资源:删除路径(path)
 end
 
 function GGE资源:是否存在(path, ...)
+    if type(path) ~= 'string' then
+        return
+    end
     if select('#', ...) > 0 then
         path = path:format(...)
     end
@@ -64,9 +67,14 @@ function GGE资源:是否存在(path, ...)
 end
 
 function GGE资源:取数据(path, ...)
+    if type(path) ~= 'string' then
+        return
+    end
+
     if select('#', ...) > 0 then
         path = path:format(...)
     end
+
     local r = self:是否存在(path)
     if r then
         if type(r) == 'string' then
@@ -74,7 +82,6 @@ function GGE资源:取数据(path, ...)
         end
         return r:取数据(path) --加载器
     end
-    return nil
 end
 
 function GGE资源:取纹理(...)

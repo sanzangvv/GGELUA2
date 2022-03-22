@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-08-03 06:12:47
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-07 06:17:54
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-21 21:31:30
 
 local SDL = require 'SDL'
 
@@ -47,7 +47,7 @@ function GUI控件:_显示(x, y)
     if rawget(self, '后显示') then
         self:后显示(_x, _y)
     end
-    
+
     if self._win:置区域(_x, _y, self.宽度, self.高度) then
         if self._spr then
             self._spr:显示(_x, _y)
@@ -60,7 +60,7 @@ function GUI控件:_显示(x, y)
                 v:_显示(x, y)
             end
         end
-    
+
         if gge.isdebug and self._win:取按键状态(SDL.KEY_F1) then
             self.矩形:显示()
         end
@@ -368,14 +368,14 @@ function GUI控件:置可见(val, sub)
     return self
 end
 
-function GUI控件:重新初始化()
+function GUI控件:重新初始化(...)
     if self.是否实例 then
         if rawget(self, '初始化') then
-            ggexpcall(self.初始化, self)
+            ggexpcall(self.初始化, self, ...)
         end
     end
     for _, v in ipairs(self.子控件) do
-        v:重新初始化()
+        v:重新初始化(...)
     end
 end
 
@@ -384,7 +384,22 @@ function GUI控件:置禁止(v)
     return self
 end
 
+function GUI控件:注册事件(k, v)
+    if not self._reg then
+        self._reg = setmetatable({}, {__mode = 'k'}) --注册消息
+    end
+    self._reg[k] = v
+end
+
 function GUI控件:发送消息(name, ...)
+    if self._reg then
+        for k, v in pairs(self._reg) do
+            if v[name] then
+                coroutine.xpcall(v[name], self, ...)
+            end
+        end
+    end
+
     local fun = rawget(self, name)
     if type(fun) == 'function' then
         return coroutine.xpcall(fun, self, ...)

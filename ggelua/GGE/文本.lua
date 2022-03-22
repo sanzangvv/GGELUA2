@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-18 15:46:35
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-21 15:23:02
 
 local SDL = require 'SDL'
 
@@ -55,7 +55,8 @@ local _obj = function(t, x, o)
     return self
 end
 --==============================================================================
-local _colors = { --RGBWYK
+local _colors = {
+    --RGBWYK
     [0x52] = 0xFF0000,
     [0x47] = 0x00FF00,
     [0x42] = 0x0000FF,
@@ -246,7 +247,7 @@ local function _Adjust(self)
                 table.insert(ret, line)
                 x = 0
                 line = {w = 0, h = fh}
-                 --换行
+                --换行
 
                 w, h = font:取宽高(b)
                 if w > width then --循环换行
@@ -347,6 +348,14 @@ function GGE文本:添加文字(name, font) --宋体，SDL文字
     return self
 end
 
+function GGE文本:置文字表(t)
+    self._文字表 = t
+end
+
+function GGE文本:置精灵表(t)
+    self._精灵表 = t
+end
+
 function GGE文本:添加精灵(k, v)
     if type(v) == 'table' and v.取宽高 and v.显示 and v.复制 then
         self._精灵表[k] = v
@@ -438,10 +447,10 @@ function GGE文本:显示(x, y)
         x, y = x:unpack()
     end
 
-    if self.hx then--中心
-        x,y = x-self.hx,y-self.hy
+    if self.hx then --中心
+        x, y = x - self.hx, y - self.hy
     end
-    
+
     for _, line in ipairs(self._数据表) do
         for _, v in ipairs(line) do
             v:显示(x, y + line.y)
@@ -449,7 +458,7 @@ function GGE文本:显示(x, y)
     end
 end
 
-function GGE文本:置中心(x,y)
+function GGE文本:置中心(x, y)
     self.hx = x
     self.hy = y
     return self

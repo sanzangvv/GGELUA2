@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-19 06:42:20
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-08 09:17:48
+-- @Last Modified time  : 2022-03-09 21:19:42
 
 local _ENV = require('SDL')
 
@@ -22,7 +22,7 @@ function SDL读写:SDL读写(file, mode)
         self._rw = file:getrwops()
     end
     if not self._rw then
-        error('打开失败->' .. file)
+        print('打开失败->' .. file)
     end
 end
 
