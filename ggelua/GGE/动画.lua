@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-07 02:50:39
+-- @Last Modified by    : GGELUA
+-- @Last Modified time  : 2022-03-22 22:00:04
 
 require 'SDL.精灵'
 
@@ -95,14 +95,22 @@ function GGE动画:更新(dt)
     end
 end
 
-function GGE动画:显示(x, y)
+function GGE动画:置坐标(x, y)
     if not y and ggetype(x) == 'GGE坐标' then
         x, y = x:unpack()
     end
-    if self._hx then
-        x, y = x - self._hx, y - self._hy
+    if x and y then
+        if self._hx then
+            x, y = x - self._hx, y - self._hy
+        end
+        self._x, self._y = x, y
     end
+end
+
+function GGE动画:显示(x, y)
     if self._spr then
+        self:置坐标(x, y)
+        x, y = self._x, self._y
         local r = self._rect
         if r then
             引擎:置区域(x - r.x, y - r.y, r.w, r.h)

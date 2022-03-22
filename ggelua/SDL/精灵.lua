@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
 -- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-03-04 11:27:15
+-- @Last Modified time  : 2022-03-22 21:57:23
 
 local SDL = require('SDL')
 SDL.IMG_Init()
@@ -69,15 +69,21 @@ function SDL精灵:复制()
     return r
 end
 
-function SDL精灵:显示(x, y)
+function SDL精灵:置坐标(x, y)
     if not y and ggetype(x) == 'GGE坐标' then
         x, y = x:unpack()
     end
-    if self._hx then --中心
-        x, y = x - self._hx, y - self._hy
+    if x and y then
+        if self._hx then --中心
+            x, y = x - self._hx, y - self._hy
+        end
+        self._x, self._y = x, y
+        self._dr:SetRectXY(x, y)
     end
-    self._x, self._y = x, y
-    self._dr:SetRectXY(x, y)
+end
+
+function SDL精灵:显示(x, y)
+    self:置坐标(x, y)
 
     local tex = self._tex
     local win = self._win
@@ -86,7 +92,7 @@ function SDL精灵:显示(x, y)
         tex:SetTextureAlphaMod(self._a)
         tex:SetTextureBlendMode(self._blend)
         tex:SetTextureScaleMode(self._scale)
-
+        
         if self._f or self._deg then --src,dst,旋转，翻转，翻转中心
             win:显示纹理(tex, self._sr, self._dr, self._deg, self._f, self._ax, self._ay)
             if self._hl then --高亮
@@ -119,12 +125,6 @@ function SDL精灵:显示中心()
         win:画点(x + 1, y - 1)
         win:画点(x, y)
     end
-    return self
-end
-
-function SDL精灵:显示矩形(r, g, b, a)
-    self._win:置颜色(r or 255, g or 0, b or 0, a or 150)
-    self._win:画矩形(self._dr)
     return self
 end
 
