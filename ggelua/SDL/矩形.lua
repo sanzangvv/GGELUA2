@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-02-11 11:49:09
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-08 12:20:26
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-23 11:17:54
 
 local SDL = require('SDL')
 local SDL矩形 = class 'SDL矩形'
@@ -11,6 +11,8 @@ function SDL矩形:SDL矩形(x, y, w, h)
         self._rect = x
     else
         self._rect = SDL.CreateRect(x, y, w, h)
+        self._CR = 255
+        self._CA = 255
     end
 end
 
@@ -44,10 +46,8 @@ function SDL矩形:显示(x, y)
         x, y = x:unpack()
     end
     if x and y then
-        local _x, _y = self._rect:GetRectXY()
-        self._rect:SetRectXY(x + _x, y + _y)
+        self:置坐标(x, y)
         引擎:画矩形(self._rect)
-        self._rect:SetRectXY(_x, _y)
     else
         引擎:画矩形(self._rect)
     end
