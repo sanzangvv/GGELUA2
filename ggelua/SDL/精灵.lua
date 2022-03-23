@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
 -- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-03-22 21:57:23
+-- @Last Modified time  : 2022-03-23 13:00:15
 
 local SDL = require('SDL')
 SDL.IMG_Init()
@@ -92,7 +92,7 @@ function SDL精灵:显示(x, y)
         tex:SetTextureAlphaMod(self._a)
         tex:SetTextureBlendMode(self._blend)
         tex:SetTextureScaleMode(self._scale)
-        
+
         if self._f or self._deg then --src,dst,旋转，翻转，翻转中心
             win:显示纹理(tex, self._sr, self._dr, self._deg, self._f, self._ax, self._ay)
             if self._hl then --高亮
@@ -111,19 +111,6 @@ function SDL精灵:显示(x, y)
     else
         win:置颜色(self._r, self._g, self._b, self._a)
         win:画矩形(self._dr, true) --实心
-    end
-    return self
-end
-
-function SDL精灵:显示中心()
-    if self._hx then
-        local win = self._win
-        win:置颜色(255, 255, 0, 255)
-        local x, y = self._x, self._y
-        win:画点(x - 1, y - 1)
-        win:画点(x, y - 1)
-        win:画点(x + 1, y - 1)
-        win:画点(x, y)
     end
     return self
 end

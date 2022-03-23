@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-08-03 06:12:47
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-21 21:31:30
+-- @Last Modified time  : 2022-03-23 18:23:16
 
 local SDL = require 'SDL'
 
@@ -345,7 +345,7 @@ function GUI控件:置可见(val, sub)
     end
     if self._lock then
         self.是否可见 = val == true
-        return
+        return self
     end
     self._lock = true
     if self:发送消息('可见事件', val) == false then
