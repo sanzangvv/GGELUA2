@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "CodeInChinese.ChineseInputAssistant",
+        "aaron-bond.better-comments",
+        "coenraads.bracket-pair-colorizer-2",
+        "ms-ceintl.vscode-language-pack-zh-hans",
+        "asuka.insertnumbers",
+        "obkoro1.korofileheader",
+        "tomblind.local-lua-debugger-vscode",
+        "sumneko.lua",
+        "autsing.lua-format-extension",
+        "vscode-icons-team.vscode-icons",
+    ]
+}

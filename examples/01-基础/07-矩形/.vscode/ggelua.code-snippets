@@ -1,0 +1,72 @@
+{
+	// Place your client 工作区 snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"GGE类_初始化": {
+		"scope": "lua",
+		"prefix": "class",
+		"description": "GGE类",
+		"body": ["local ${1:$TM_FILENAME_BASE} = class('${1}')",
+	"",
+		"function ${1}:初始化(${2})",
+			"${3}",
+		"end",
+	"",
+		"function ${1}:更新(dt)",
+			"",
+		"end",
+	"",
+		"function ${1}:显示(x,y)",
+			"",
+		"end",
+	"",
+		"return ${1}"]
+		
+	},
+
+	"GGE类_方法": {
+		"scope": "lua",
+		"prefix": "classfunction",
+		"description": "GGE类方法",
+		"body": [
+		"function ${1:$TM_FILENAME_BASE}:${2:名称}(${3})",
+			"${4}",
+		"end",
+		]
+	},
+
+	"GGE类_类名": {
+		"scope": "lua",
+		"prefix": "class",
+		"description": "GGE类",
+		"body": ["local ${1:$TM_FILENAME_BASE} = class('${1}')",
+	"",
+		"function ${1}:${1}(${2})",
+			"${3}",
+		"end",
+	"",
+		"function ${1}:更新(dt)",
+			"",
+		"end",
+	"",
+		"function ${1}:显示(x,y)",
+			"",
+		"end",
+	"",
+		"return ${1}"]
+		
+	}
+}

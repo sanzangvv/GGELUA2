@@ -1,0 +1,11 @@
+{
+    "Lua.diagnostics.disable": [
+      "lowercase-global",
+      "unused-local",
+      "undefined-global",
+      "undefined-env-child",
+      "unbalanced-assignments",
+      "trailing-space"
+  ],
+  "Lua.runtime.unicodeName": true,
+}
