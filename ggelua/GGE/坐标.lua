@@ -1,7 +1,7 @@
 -- @Author       : GGELUA
 -- @Date         : 2021-09-17 08:26:43
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-07 03:04:35
+-- @Last Modified by    : GGELUA
+-- @Last Modified time  : 2022-03-23 13:17:47
 
 local GGE坐标 = class 'GGE坐标'
 GGE坐标.x = 0
@@ -170,8 +170,7 @@ function GGE坐标:显示(r, g, b, a)
     local angle = 360 / 20
     引擎:置颜色(255, 0, 0, 255)
     for i = 0, 20 - 1 do
-        local pxy = self:取距离坐标(3, math.rad(i * angle))
-         --rad角度转弧度
+        local pxy = self:取距离坐标(3, math.rad(i * angle)) --rad角度转弧度
         local pxy1 = self:取距离坐标(3, math.rad((i + 1) * angle))
         引擎:画线(pxy.x, pxy.y, pxy1.x, pxy1.y)
     end
