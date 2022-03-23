@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-10-30 13:05:32
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-03 06:48:53
+-- @Last Modified time  : 2022-03-23 23:47:34
 
 local gge = require('ggelua')
 local SDL = require('SDL')
@@ -190,12 +190,20 @@ end
 
 function SDL渲染:置逻辑宽高(w, h)
     if self._rd:RenderSetLogicalSize(w, h) then
-        self.宽度, self.高度 = w, h
+        if w == 0 or h == 0 then
+            self.宽度, self.高度 = self._rd:GetRendererOutputSize()
+        else
+            self.宽度, self.高度 = w, h
+        end
+
         self.宽度2 = self.宽度 // 2
         self.高度2 = self.高度 // 2
-
-        self._rt = self._rd:CreateTexture(self.宽度, self.高度, SDL.TEXTUREACCESS_TARGET)
-        self._rt:SetTextureScaleMode(1) --SDL_ScaleModeLinear
+        if w == 0 or h == 0 then
+            self._rt = nil
+        else
+            self._rt = self._rd:CreateTexture(self.宽度, self.高度, SDL.TEXTUREACCESS_TARGET)
+            self._rt:SetTextureScaleMode(1) --SDL_ScaleModeLinear
+        end
         return true
     else
         SDL.Log(SDL.GetError())
