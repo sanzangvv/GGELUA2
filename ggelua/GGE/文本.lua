@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-17 08:26:43
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-21 15:23:02
+-- @Last Modified time  : 2022-03-24 16:00:30
 
 local SDL = require 'SDL'
 
@@ -349,7 +349,10 @@ function GGE文本:添加文字(name, font) --宋体，SDL文字
 end
 
 function GGE文本:置文字表(t)
-    self._文字表 = t
+    self._文字表 = {}
+    for k, v in pairs(t) do
+        self._文字表[k] = v
+    end
 end
 
 function GGE文本:置精灵表(t)
