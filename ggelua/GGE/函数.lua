@@ -1,7 +1,7 @@
 -- @Author: GGELUA
 -- @Date:   2021-09-01 21:04:09
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-10 13:37:54
+-- @Last Modified time  : 2022-03-25 21:29:59
 
 local gge = gge
 local _ENV = setmetatable({}, {__index = _G})
@@ -277,6 +277,29 @@ function 遍历目录(path, ...)
     end
 end
 dir = 遍历目录
+
+function 遍历文件(path, ...)
+    if select('#', ...) > 0 then
+        path = path:format(...)
+    end
+    local sep = package.config:sub(1, 1)
+    local lfs = require('lfs')
+    local dir, u = lfs.dir(path)
+
+    return function()
+        repeat
+            local file = dir(u)
+            if file then
+                local f = path .. sep .. file
+                local attr = lfs.attributes(f)
+
+                if attr and attr.mode ~= 'directory' then
+                    return f
+                end
+            end
+        until not file
+    end
+end
 
 function 创建目录(path, ...)
     if not path then

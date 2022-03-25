@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-08-03 06:12:47
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-25 11:10:37
+-- @Last Modified time  : 2022-03-25 23:53:29
 
 local SDL = require 'SDL'
 
@@ -249,12 +249,12 @@ end
 function GUI控件:取坐标()
     local x, y = self.x, self.y
 
-    if x < 0 then --如果坐标为负数，则值相对于 宽高 - 坐标
+    if x < 0 and not self.绝对坐标 then --如果坐标为负数，则值相对于 宽高 - 坐标
         if self.父控件 and self.父控件.宽度 then
             x = x + self.父控件.宽度
         end
     end
-    if y < 0 then
+    if y < 0 and not self.绝对坐标 then
         if self.父控件 and self.父控件.高度 then
             y = y + self.父控件.高度
         end
