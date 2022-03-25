@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-07-10 16:32:33
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-09 05:30:19
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-25 11:09:56
 
 local gge = require('ggelua')
 local SDL = require 'SDL'
@@ -166,10 +166,6 @@ function GUI输入:置颜色(...)
     self._文字:置颜色(...)
     self._光标:置颜色(...)
     return self
-end
-
-function GUI输入:取文字()
-    return self._文字
 end
 
 function GUI输入:置文字(f, ...)
@@ -548,7 +544,7 @@ function GUI输入:_消息事件(msg)
                         v.control = self
                         self._按下位置 = self._光标位置
                         self._左键按下 = true
-                        
+
                         _计算光标位置(self, v.x, v.y)
                     else
                         self:取消选中()

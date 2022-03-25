@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-08-03 06:12:47
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-23 18:23:16
+-- @Last Modified time  : 2022-03-25 11:10:37
 
 local SDL = require 'SDL'
 
@@ -309,6 +309,10 @@ function GUI控件:置高度(h)
     self.高度 = h
     self.矩形:置宽高(self.宽度, h)
     return self
+end
+
+function GUI控件:取文字()
+    return self._文字
 end
 
 function GUI控件:遍历控件()

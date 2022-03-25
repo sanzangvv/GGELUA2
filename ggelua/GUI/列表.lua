@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-07-10 16:32:33
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-17 09:09:02
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-25 13:51:21
 
 local SDL = require 'SDL'
 
@@ -65,9 +65,9 @@ function GUI列表:初始化()
     self.选中行 = 0
     self.焦点行 = 0
 
-    self.文字 = self:取根控件()._文字:复制():置颜色(0, 0, 0, 255)
+    self._文字 = self:取根控件()._文字:复制():置颜色(0, 0, 0, 255)
 
-    self.行高度 = self.文字:取高度() + 1
+    self.行高度 = self._文字:取高度() + 1
 
     self.选中精灵 = require('SDL.精灵')(0, 0, 0, self.宽度, 0):置颜色(0, 0, 240, 128)
     self.焦点精灵 = require('SDL.精灵')(0, 0, 0, self.宽度, 0):置颜色(255, 255, 0, 128)
@@ -130,7 +130,7 @@ function GUI列表:插入(i, 文本, x, y, w, h)
     列项.px = x or 0
     列项.py = y or 0
     if 文本 then
-        列项:置精灵(self.文字:取精灵(文本))
+        列项:置精灵(self._文字:取精灵(文本))
     end
 
     if type(self.子显示) == 'function' then
@@ -191,8 +191,8 @@ function GUI列表:置宽度(w)
     return self
 end
 
-function GUI列表:置宽高(w,h)
-    GUI控件.置宽高(self, w,h)
+function GUI列表:置宽高(w, h)
+    GUI控件.置宽高(self, w, h)
     for i, v in ipairs(self.子控件) do
         v:置宽度(w)
     end
@@ -216,13 +216,13 @@ function GUI列表:遍历项目()
 end
 
 function GUI列表:置文字(v)
-    self.文字 = v
-    self.行高度 = self.文字:取高度('A')
+    self._文字 = v
+    self.行高度 = self._文字:取高度('A')
     return self
 end
 
 function GUI列表:置颜色(...)
-    self.文字:置颜色(...)
+    self._文字:置颜色(...)
     return self
 end
 
@@ -236,7 +236,7 @@ end
 function GUI列表:置文本(i, v)
     if self.子控件[i] then
         self.子控件[i].名称 = v
-        self.子控件[i]:置精灵(v and self.文字:取精灵(v))
+        self.子控件[i]:置精灵(v and self._文字:取精灵(v))
     end
     return self
 end
@@ -319,6 +319,12 @@ function GUI列表:绑定滑块(obj)
     return obj
 end
 
+function GUI列表:创建滑块(name, x, y, w, h)
+    local 滑块 = self.父控件:创建滑块(name, x, y, w, h)
+    self:绑定滑块(滑块)
+    return 滑块
+end
+
 function GUI列表:_消息事件(msg)
     if not self.是否可见 then
         return
@@ -328,7 +334,7 @@ function GUI列表:_消息事件(msg)
     if not msg.鼠标 then
         return
     end
-    
+
     for _, v in ipairs(msg.鼠标) do
         if v.type == SDL.MOUSE_DOWN then
             if self:检查点(v.x, v.y) then
