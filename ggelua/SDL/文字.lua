@@ -1,12 +1,19 @@
 -- @Author              : GGELUA
 -- @Date                : 2022-03-07 18:52:00
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-28 02:12:44
+-- @Last Modified time  : 2022-03-28 07:25:09
 
 local gge = require('ggelua')
 local SDL = require('SDL')
 local ggetype = ggetype
 local TTF = SDL.TTF_Init()
+local fcache = {}
+local _set = function(self)
+    if self._file then
+        self:置大小(self._size)
+        self:置样式(self._style)
+    end
+end
 
 local SDL文字 = class('SDL文字')
 
@@ -15,17 +22,24 @@ function SDL文字:SDL文字(file, size, aliasing, w)
     self._anti = aliasing ~= false --抗锯齿
     self._rnw = w --折行宽度
     self._size = tonumber(size) or 14
+    self._ref = 1
 
     local tp = ggetype(file)
     if tp == 'string' then
-        if gge.platform == 'Android' or gge.platform == 'iOS' then --读到内存
+        self._file = file
+        if fcache[file] then
+            local f = fcache[file]
+            self._font = f._font
+            f._ref = f._ref + 1
+            return
+        elseif gge.platform == 'Android' or gge.platform == 'iOS' then --读到内存
             local data = SDL.LoadFile(file)
             self._rw = require('SDL.读写')(data, #data)
             self._font = TTF.OpenFontRW(self._rw:取对象(), self._size)
         else
-            self._file = file
             self._font = TTF.OpenFont(file, self._size)
         end
+        fcache[file] = self
     elseif tp == 'SDL读写' then
         self._rw = file
         self._font = TTF.OpenFontRW(file:取对象(), self._size)
@@ -39,6 +53,16 @@ function SDL文字:SDL文字(file, size, aliasing, w)
         self:置颜色(255, 255, 255)
     else
         error(SDL.GetError())
+    end
+end
+
+function SDL文字:__gc(v)
+    if self._file then
+        local f = fcache[self._file]
+        f._ref = f._ref - 1
+        if f._ref == 0 then
+            fcache[self._file] = nil
+        end
     end
 end
 
@@ -62,6 +86,7 @@ function SDL文字:显示(x, y, t)
     if not self._cache then
         self._cache = self._font:CreateFontCache(self._win:取渲染器())
     end
+    _set(self)
     self._cache:Draw(x, y, t)
 end
 
@@ -85,6 +110,7 @@ function SDL文字:取图像(t, ...)
         if select('#', ...) > 0 then
             t = tostring(t):format(...)
         end
+        _set(self)
         if self._rnw then --折行
             if self._ba or self._br or self._bg or self._bb then --有背景
                 return self._win:创建图像(self._font:RenderUTF8_Shaded_Wrapped(t, self._r, self._g, self._b, self._a, self._br, self._bg, self._bb, self._ba, self._rnw))
@@ -106,6 +132,7 @@ end
 
 function SDL文字:取描边图像(t, r, g, b, a)
     if t and t ~= '' then
+        _set(self)
         local sfa = self._font:RenderUTF8_Solid(t, self._r, self._g, self._b, self._a)
         local sfb = self._font:RenderUTF8_Solid(t, r or 0, g or 0, b or 0, a)
         local sf = SDL.CreateRGBSurfaceWithFormat(sfa.w + 2, sfa.h + 2)
@@ -132,6 +159,7 @@ end
 
 function SDL文字:取投影图像(t, r, g, b, a)
     if t and t ~= '' then
+        _set(self)
         local sfa = self._font:RenderUTF8_Solid(t, self._r, self._g, self._b, self._a)
         local sfb = self._font:RenderUTF8_Solid(t, r or 0, g or 0, b or 0, a)
         local sf = SDL.CreateRGBSurfaceWithFormat(sfa.w + 1, sfa.h + 1)
@@ -159,12 +187,16 @@ SDL.TTF_STYLE_BOLD = 0x01 --粗体
 SDL.TTF_STYLE_ITALIC = 0x02 --斜体
 SDL.TTF_STYLE_UNDERLINE = 0x04 --下划线
 SDL.TTF_STYLE_STRIKETHROUGH = 0x08 --删除线
+
 function SDL文字:取样式()
-    return self._font:GetFontStyle()
+    return self._style or 0
 end
 
 function SDL文字:置样式(v)
-    self._font:SetFontStyle(v)
+    if type(v) == 'number' then
+        self._style = v & 0xF
+        self._font:SetFontStyle(v)
+    end
     return self
 end
 
@@ -181,6 +213,7 @@ SDL.TTF_HINTING_LIGHT = 1
 SDL.TTF_HINTING_MONO = 2
 SDL.TTF_HINTING_NONE = 3
 SDL.TTF_HINTING_LIGHT_SUBPIXEL = 4
+
 function SDL文字:置标志(v)
     self._font:SetFontHinting(v)
     return self
@@ -192,7 +225,6 @@ end
 
 function SDL文字:置颜色(r, g, b, a)
     if self._r ~= r or self._g ~= g or self._b ~= b or self._a ~= a then
-        self._t = nil
         self._a = a
         self._r = r
         self._g = g
@@ -207,7 +239,6 @@ function SDL文字:取颜色()
 end
 
 function SDL文字:置背景颜色(r, g, b, a)
-    self._t = nil
     self._ba = a
     self._br = r
     self._bg = g
@@ -220,35 +251,33 @@ function SDL文字:取背景颜色()
 end
 --自动折行
 function SDL文字:置宽度(w)
-    self._t = nil
     self._rnw = w
     return self
 end
 --动态修改文字大小
 function SDL文字:置大小(v)
-    if v ~= self._size then
-        self._size = v
-        self._t = nil
-        self._font:SetFontSize(v)
-    end
+    self._size = v
+    self._font:SetFontSize(v)
     return self
 end
 
 function SDL文字:置抗锯齿(v)
-    self._t = nil
     self._anti = v
     return self
 end
 
 function SDL文字:取宽度(t)
+    _set(self)
     return (self._font:SizeUTF8(t))
 end
 
 function SDL文字:取高度(t)
+    _set(self)
     return self._font:FontHeight()
 end
 
 function SDL文字:取宽高(t)
+    _set(self)
     return self._font:SizeUTF8(t)
 end
 
