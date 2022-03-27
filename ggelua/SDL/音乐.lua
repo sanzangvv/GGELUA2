@@ -1,10 +1,11 @@
--- @Author       : GGELUA
--- @Date         : 2021-09-19 06:42:20
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-05 05:21:36
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-28 02:15:31
 
-local _ENV = require('SDL')
-MIX_Init()
+local SDL = require('SDL')
+local ggetype = ggetype
+local MIX = SDL.MIX_Init()
 
 local SDL音乐 = class('SDL音乐')
 
@@ -21,7 +22,7 @@ function SDL音乐:初始化(file)
     end
 
     if self._mus then
-        _mixs[self] = self._mus
+        SDL._mixs[self] = self._mus
     else
         warn(GetError())
     end

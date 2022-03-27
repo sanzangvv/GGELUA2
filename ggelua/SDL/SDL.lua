@@ -1,7 +1,7 @@
 -- @Author              : GGELUA
 -- @Date                : 2021-12-15 23:37:41
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-08 08:53:08
+-- @Last Modified time  : 2022-03-28 02:14:16
 
 local _ENV = setmetatable(require('gsdl2'), {__index = _G})
 SDL = _ENV
@@ -679,11 +679,15 @@ function MIX_Init()
     --MIX.AllocateChannels(16)--最大播放数
     --print(MIX.QuerySpec())--取信息
     end
+    return MIX
 end
 
 function TTF_Init()
-    TTF = require('gsdl2.ttf')
-    TTF.Init()
+    if not TTF then
+        TTF = require('gsdl2.ttf')
+        TTF.Init()
+    end
+    return TTF
 end
 
 读入文件 = LoadFile

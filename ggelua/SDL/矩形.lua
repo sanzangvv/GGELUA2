@@ -1,9 +1,10 @@
--- @Author: baidwwy
--- @Date:   2021-02-11 11:49:09
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-23 11:17:54
+-- @Last Modified time  : 2022-03-28 02:21:36
 
 local SDL = require('SDL')
+local ggetype = ggetype
 local SDL矩形 = class 'SDL矩形'
 
 function SDL矩形:SDL矩形(x, y, w, h)

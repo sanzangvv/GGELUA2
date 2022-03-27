@@ -1,9 +1,9 @@
--- @Author       : GGELUA
--- @Date         : 2021-09-19 06:42:20
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-09 21:19:42
+-- @Last Modified time  : 2022-03-28 02:28:24
 
-local _ENV = require('SDL')
+local SDL = require('SDL')
 
 local SDL读写 = class 'SDL读写'
 
@@ -12,17 +12,18 @@ function SDL读写:SDL读写(file, mode)
     if tp == 'string' then
         if type(mode) == 'number' and #file == mode then
             self._str = file
-            self._rw = RWFromStr(file, mode)
+            self._rw = SDL.RWFromStr(file, mode)
         else
-            self._rw = RWFromFile(file, mode)
+            self._rw = SDL.RWFromFile(file, mode)
         end
     elseif tp == 'userdata' and type(mode) == 'number' then
-        self._rw = RWFromMem(file, mode)
+        self._rw = SDL.RWFromMem(file, mode)
     elseif tp == 'SDL_Memory' then --SDL.malloc
         self._rw = file:getrwops()
     end
     if not self._rw then
-        print('打开失败->' .. file)
+        warn('打开失败->' .. file)
+        warn(SDL.GetError())
     end
 end
 
@@ -74,9 +75,9 @@ end
 function SDL读写:取大小()
     return self._rw:RWsize()
 end
-RW_SEEK_SET = 0 --从头
-RW_SEEK_CUR = 1 --当前
-RW_SEEK_END = 2 --从尾
+SDL.RW_SEEK_SET = 0 --从头
+SDL.RW_SEEK_CUR = 1 --当前
+SDL.RW_SEEK_END = 2 --从尾
 
 function SDL读写:置位置(offset, whence)
     return self._rw:RWseek(offset, whence or 0)

@@ -1,10 +1,12 @@
--- @Author: GGELUA
--- @Date:   2021-09-19 06:42:20
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-09 14:52:22
+-- @Last Modified time  : 2022-03-28 02:22:03
 
-local _ENV = require('SDL')
-IMG_Init()
+local SDL = require('SDL')
+local ggetype = ggetype
+local assert = assert
+local IMG = SDL.IMG_Init()
 local _target = {}
 
 local SDL图像 = class 'SDL图像'
@@ -26,7 +28,7 @@ function SDL图像:SDL图像(a, b, c, d)
     end
 
     if self._sf then
-        _sfs[self] = self._sf
+        SDL._sfs[self] = self._sf
         self._win = SDL._win
     else
         error(SDL.GetError())

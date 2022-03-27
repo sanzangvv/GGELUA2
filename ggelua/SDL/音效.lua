@@ -1,10 +1,11 @@
--- @Author       : GGELUA
--- @Date         : 2021-09-19 06:42:20
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-05 05:21:57
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-28 02:17:06
 
-local _ENV = require('SDL')
-MIX_Init()
+local SDL = require('SDL')
+local ggetype = ggetype
+local MIX = SDL.MIX_Init()
 
 local SDL音效 = class 'SDL音效'
 
@@ -19,7 +20,7 @@ function SDL音效:SDL音效(file)
     end
 
     if self._wav then
-        _mixs[self] = self._wav
+        SDL._mixs[self] = self._wav
     else
         print('播放失败')
         warn(GetError())

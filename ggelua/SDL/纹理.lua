@@ -1,10 +1,10 @@
--- @Author: baidwwy
--- @Date:   2021-08-18 13:24:54
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-05 05:01:19
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-28 02:27:49
 
-local _ENV = require('SDL')
-IMG_Init()
+local SDL = require('SDL')
+local IMG = SDL.IMG_Init()
 
 local SDL纹理 = class 'SDL纹理'
 
@@ -60,8 +60,8 @@ function SDL纹理:取模式()
     return self._access
 end
 
-function SDL纹理:复制()
-end
+-- function SDL纹理:复制()
+-- end
 
 function SDL纹理:锁定(x, y, w, h)
     if self._tex then
@@ -70,7 +70,7 @@ function SDL纹理:锁定(x, y, w, h)
         end
         local rect
         if x and y and w and h then
-            rect = CreateRect(x, y, w, h)
+            rect = SDL.CreateRect(x, y, w, h)
         end
         return self._tex:LockTexture(rect)
     end
@@ -83,23 +83,23 @@ function SDL纹理:解锁()
     return self
 end
 
-function SDL纹理:到灰度()
-    return self
-end
+-- function SDL纹理:到灰度()
+--     return self
+-- end
 
 function SDL纹理:到精灵()
     return require('SDL.精灵')(self)
 end
 
-function SDL纹理:取像素(x, y)
-end
+-- function SDL纹理:取像素(x, y)
+-- end
 
-function SDL纹理:置像素(x, y, r, g, b, a)
-    return self
-end
+-- function SDL纹理:置像素(x, y, r, g, b, a)
+--     return self
+-- end
 
-function SDL纹理:保存文件(file, tp, quality)
-end
+-- function SDL纹理:保存文件(file, tp, quality)
+-- end
 
 function SDL纹理:置过滤(v)
     if self._tex then

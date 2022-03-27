@@ -1,12 +1,12 @@
--- @Author: GGELUA
--- @Date:   2021-09-19 06:42:20
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-07 09:08:46
+-- @Last Modified time  : 2022-03-28 02:12:44
 
 local gge = require('ggelua')
-local _ENV = require('SDL')
+local SDL = require('SDL')
 local ggetype = ggetype
-SDL.TTF_Init()
+local TTF = SDL.TTF_Init()
 
 local SDL文字 = class('SDL文字')
 
@@ -15,12 +15,12 @@ function SDL文字:SDL文字(file, size, aliasing, w)
     self._anti = aliasing ~= false --抗锯齿
     self._rnw = w --折行宽度
     self._size = tonumber(size) or 14
-    
+
     local tp = ggetype(file)
     if tp == 'string' then
         if gge.platform == 'Android' or gge.platform == 'iOS' then --读到内存
             local data = SDL.LoadFile(file)
-            self._rw = require('SDL.读写')(data,#data)
+            self._rw = require('SDL.读写')(data, #data)
             self._font = TTF.OpenFontRW(self._rw:取对象(), self._size)
         else
             self._file = file
@@ -35,7 +35,7 @@ function SDL文字:SDL文字(file, size, aliasing, w)
     end
 
     if self._font then
-        _ttfs[self] = self._font
+        SDL._ttfs[self] = self._font
         self:置颜色(255, 255, 255)
     else
         error(SDL.GetError())
@@ -48,7 +48,7 @@ end
 
 function SDL文字:复制()
     if self._file then
-        return SDL文字(self._file, self._size, self._anti, self._rnw):置颜色(self._r, self._g, self._b, self._a) 
+        return SDL文字(self._file, self._size, self._anti, self._rnw):置颜色(self._r, self._g, self._b, self._a)
     end
     self._rw:置位置(0)
     return SDL文字(self._rw, self._size, self._anti, self._rnw):置颜色(self._r, self._g, self._b, self._a)
@@ -154,11 +154,11 @@ function SDL文字:取投影精灵(t, r, g, b, a)
     return self._win:创建精灵()
 end
 
-TTF_STYLE_NORMAL = 0x00 --正常
-TTF_STYLE_BOLD = 0x01 --粗体
-TTF_STYLE_ITALIC = 0x02 --斜体
-TTF_STYLE_UNDERLINE = 0x04 --下划线
-TTF_STYLE_STRIKETHROUGH = 0x08 --删除线
+SDL.TTF_STYLE_NORMAL = 0x00 --正常
+SDL.TTF_STYLE_BOLD = 0x01 --粗体
+SDL.TTF_STYLE_ITALIC = 0x02 --斜体
+SDL.TTF_STYLE_UNDERLINE = 0x04 --下划线
+SDL.TTF_STYLE_STRIKETHROUGH = 0x08 --删除线
 function SDL文字:取样式()
     return self._font:GetFontStyle()
 end
@@ -176,11 +176,11 @@ function SDL文字:置轮廓(v)
     self._font:SetFontOutline(v)
     return self
 end
-TTF_HINTING_NORMAL = 0
-TTF_HINTING_LIGHT = 1
-TTF_HINTING_MONO = 2
-TTF_HINTING_NONE = 3
-TTF_HINTING_LIGHT_SUBPIXEL = 4
+SDL.TTF_HINTING_NORMAL = 0
+SDL.TTF_HINTING_LIGHT = 1
+SDL.TTF_HINTING_MONO = 2
+SDL.TTF_HINTING_NONE = 3
+SDL.TTF_HINTING_LIGHT_SUBPIXEL = 4
 function SDL文字:置标志(v)
     self._font:SetFontHinting(v)
     return self

@@ -1,7 +1,7 @@
--- @Author: GGELUA
--- @Date:   2021-09-19 06:42:20
+-- @Author              : GGELUA
+-- @Date                : 2022-03-21 14:01:02
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-02-16 14:53:01
+-- @Last Modified time  : 2022-03-28 02:33:07
 
 local SDL = require('SDL')
 local gge = require('ggelua')
@@ -13,9 +13,8 @@ local next = next
 
 local ggeinit = SDL.RegisterEvents()
 
-local rd = require('SDL.渲染')
-
-local SDL窗口 = class('SDL窗口', 'SDL渲染')
+local SDL渲染 = require('SDL.渲染')
+local SDL窗口 = class('SDL窗口', SDL渲染)
 
 function SDL窗口:SDL窗口(t)
     for k, v in pairs(t) do
@@ -158,7 +157,7 @@ local function _Destroy(self)
         collectgarbage()
     end
 
-    self[rd]:__gc() --纹理
+    self[SDL渲染]:__gc() --纹理
 
     if self._win then
         print('DestroyWindow', self.标题)

@@ -1,9 +1,11 @@
--- @Author: GGELUA
--- @Date:   2021-09-17 08:26:43
--- @Last Modified by    : GGELUA
--- @Last Modified time  : 2022-03-23 13:00:15
+-- @Author              : GGELUA
+-- @Date                : 2022-03-22 21:22:22
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-28 02:20:55
 
 local SDL = require('SDL')
+local assert = assert
+local ggetype = ggetype
 SDL.IMG_Init()
 
 local SDL精灵 = class 'SDL精灵'

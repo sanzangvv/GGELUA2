@@ -1,10 +1,11 @@
--- @Author       : GGELUA
--- @Date         : 2021-12-10 10:46:42
--- @Last Modified by: baidwwy
--- @Last Modified time: 2022-01-05 05:21:12
+-- @Author              : GGELUA
+-- @Date                : 2022-03-07 18:52:00
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-28 02:18:41
 
-local _ENV = require('SDL')
-IMG_Init()
+local SDL = require('SDL')
+local IMG = SDL.IMG_Init()
+local ggetype = ggetype
 local GGE动画 = require('GGE.动画')
 local SDL动画 = class('SDL动画', GGE动画)
 
