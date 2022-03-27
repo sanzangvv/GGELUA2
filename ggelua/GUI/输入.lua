@@ -1,34 +1,36 @@
 -- @Author: baidwwy
 -- @Date:   2021-07-10 16:32:33
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-25 11:09:56
+-- @Last Modified time  : 2022-03-28 06:42:48
 
 local gge = require('ggelua')
 local SDL = require 'SDL'
 --===================================================================
 local SDL精灵 = require('SDL.精灵')
 local 输入光标 = class('GUI输入光标', SDL精灵)
-function 输入光标:初始化(对象)
-    SDL精灵.SDL精灵(self, 0, 0, 0, 1, 15)
-    self:置颜色(0, 0, 0, 255)
-    self.对象 = 对象
-    self.计时 = 0
-    self.间隔 = 0.5
-end
+do
+    function 输入光标:初始化(对象)
+        SDL精灵.SDL精灵(self, 0, 0, 0, 1, 15)
+        self:置颜色(0, 0, 0, 255)
+        self.对象 = 对象
+        self.计时 = 0
+        self.间隔 = 0.5
+    end
 
-function 输入光标:更新(dt)
-    if self.对象._输入焦点 then
-        self.计时 = self.计时 + dt
-        if self.计时 >= self.间隔 then
-            self.计时 = 0
-            self.可见 = not self.可见
+    function 输入光标:更新(dt)
+        if self.对象._输入焦点 then
+            self.计时 = self.计时 + dt
+            if self.计时 >= self.间隔 then
+                self.计时 = 0
+                self.可见 = not self.可见
+            end
         end
     end
-end
 
-function 输入光标:显示(x, y)
-    if self.对象._输入焦点 and self.可见 then
-        SDL精灵.显示(self, x, y)
+    function 输入光标:显示(x, y)
+        if self.对象._输入焦点 and self.可见 then
+            SDL精灵.显示(self, x, y)
+        end
     end
 end
 --===================================================================
@@ -526,12 +528,6 @@ function GUI输入:_消息事件(msg)
                 self:插入文本(v.text)
             end
         end
-
-        if msg.输入法 then
-            for _, v in ipairs(msg.输入法) do
-                --print(#v.text,v.text,v.start,v.length)--TODO
-            end
-        end
     end
 
     if msg.鼠标 then
@@ -599,7 +595,18 @@ function GUI输入:_消息事件(msg)
         end
     end
 
-    if not self._输入焦点 or self.是否禁止 or not msg.键盘 then
+    if msg.输入法 then
+        for _, v in ipairs(msg.输入法) do
+            --print(#v.text,v.text,v.start,v.length)--TODO
+            self._root._输入中 = true
+            if v.text == '' then
+                self._root._输入中 = false
+                return
+            end
+        end
+    end
+
+    if not self._输入焦点 or self.是否禁止 or not msg.键盘 or self._root._输入中 then
         return
     end
 
