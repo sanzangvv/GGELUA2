@@ -1,7 +1,7 @@
 -- @Author: baidwwy
 -- @Date:   2021-08-22 19:58:16
--- @Last Modified by: baidwwy
--- @Last Modified time: 2021-12-22 16:10:51
+-- @Last Modified by    : baidwwy
+-- @Last Modified time  : 2022-03-26 11:42:28
 
 local SDL = require 'SDL'
 local GUI控件 = require('GUI.控件')
@@ -9,6 +9,7 @@ local GUI控件 = require('GUI.控件')
 local GUI网格 = class('GUI网格', GUI控件)
 
 function GUI网格:初始化()
+    self._id = 0
 end
 
 local _格子 = class('GUI格子', GUI控件) --继承一下，防止控件接收掉消息
@@ -35,7 +36,7 @@ function GUI网格:添加格子(x, y, w, h)
         end
     end
     格子:置可见(true)
-    
+
     table.insert(self.子控件, 格子)
     return 格子
 end
@@ -78,9 +79,9 @@ function GUI网格:绑定滑块(obj)
     if obj then
         local 置位置 = obj.置位置
         obj.置位置 = function(this, v)
-            if self.高度 >self:取父控件().高度 then
-                local max = self.高度-self:取父控件().高度
-                self:置中心(0,-math.floor( max* (this.位置/this.最大值)))
+            if self.高度 > self:取父控件().高度 then
+                local max = self.高度 - self:取父控件().高度
+                self:置中心(0, -math.floor(max * (this.位置 / this.最大值)))
                 置位置(this, v)
             else
                 置位置(this, 0)
