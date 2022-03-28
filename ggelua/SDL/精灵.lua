@@ -1,7 +1,7 @@
 -- @Author              : GGELUA
 -- @Date                : 2022-03-22 21:22:22
 -- @Last Modified by    : baidwwy
--- @Last Modified time  : 2022-03-28 02:20:55
+-- @Last Modified time  : 2022-03-28 15:00:31
 
 local SDL = require('SDL')
 local assert = assert
@@ -136,18 +136,15 @@ function SDL精灵:取纹理()
 end
 --@param SDL_ScaleMode
 function SDL精灵:置过滤(v)
+    if type(v) == 'boolean' then
+        v = 1
+    end
     self._scale = v
-    -- if self._tex then
-    --     self._tex:SetTextureScaleMode(v)
-    -- end
     return self
 end
 
 function SDL精灵:取过滤()
     return self._scale
-    -- if self._tex then
-    --     return self._tex:GetTextureScaleMode()
-    -- end
 end
 
 function SDL精灵:置区域(x, y, w, h)
@@ -167,10 +164,11 @@ function SDL精灵:置区域(x, y, w, h)
     return self
 end
 
-function SDL精灵:置缩放(x, y)
+function SDL精灵:置缩放(x, y, v)
     y = math.floor(self.高度 * (y or x))
     x = math.floor(self.宽度 * x)
     self._dr:SetRectWH(x, y)
+    self:置过滤(v)
     return self
 end
 
